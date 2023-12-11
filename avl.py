@@ -1,22 +1,17 @@
 class AVL:
     class Node:
-        def __init__(self, key, left = None, right = None, parent = None):
+        def __init__(self, key, left = None, right = None):
             self.key = key
             self.left = left
             self.right = right
-            self.parent = parent
             self.height = 1
         
-    def __init__(self):
-        self.root = None
-
     def right_rotate(self, z):
         y = z.left
         t3 = y.right
         
         z.left = t3
         y.right = z
-        self.root = y
 
         z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
         y.height = 1 + max(self.get_height(y.left), self.get_height(y.right))
@@ -29,35 +24,27 @@ class AVL:
 
         z.right = t2
         y.left = z
-        self.root = y
 
         z.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
         y.height = 1 + max(self.get_height(z.left), self.get_height(z.right))
 
         return y
         
-    def insert(self, key):
-        if self.root is None:
-            self.root = self.Node(key)
-            return
-        return self.__insert(key, self.root)
+    def insert(self, root, key):
+        if root is None:
+            return self.Node(key)
 
-    def __insert(self, key, root):
-        
         if key < root.key:
             if root.left is None:
                 root.left = self.Node(key)
-                root.left.parent = root
             else:
-                self.__insert(key, root.left)
+                self.insert(root.left, key)
     
         if key > root.key:
             if root.right is None:
                 root.right = self.Node(key)
-                root.right.parent = root
             else:
-                self.__insert(key, root.right)
-
+                self.insert(root.right, key)
 
         root.height = 1 + max(self.get_height(root.left), self.get_height(root.right))
             
@@ -80,6 +67,8 @@ class AVL:
             # right-left case
             root.right = self.right_rotate(root.right)
             return self.left_rotate(root)
+        
+        return root
 
     def get_height(self, root):
         if root is None:
@@ -91,17 +80,16 @@ class AVL:
             return 0 
         return self.get_height(root.left) - self.get_height(root.right)
 
-    
-    def pre_order(self):
-        if self.root is None:
-            return
-        return self.__pre_order(self.root)
-
-    def __pre_order(self, root):
+    def pre_order(self, root):
         if root is None:
             return
         print(f'{root.key} ({self.get_balance(root)}) | ', end='')
-        self.__pre_order(root.left)
-        self.__pre_order(root.right)
+        self.pre_order(root.left)
+        self.pre_order(root.right)
 
 avl = AVL()
+root = None
+root = avl.insert(root, 2)
+root = avl.insert(root, 1)
+root = avl.insert(root, 3)
+avl.pre_order(root)
