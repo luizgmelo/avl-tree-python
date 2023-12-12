@@ -35,16 +35,10 @@ class AVL:
             return self.Node(key)
 
         if key < root.key:
-            if root.left is None:
-                root.left = self.Node(key)
-            else:
-                self.insert(root.left, key)
+            root.left = self.insert(root.left, key)
     
         if key > root.key:
-            if root.right is None:
-                root.right = self.Node(key)
-            else:
-                self.insert(root.right, key)
+            root.right = self.insert(root.right, key)
 
         root.height = 1 + max(self.get_height(root.left), self.get_height(root.right))
             
@@ -89,7 +83,3 @@ class AVL:
 
 avl = AVL()
 root = None
-root = avl.insert(root, 2)
-root = avl.insert(root, 1)
-root = avl.insert(root, 3)
-avl.pre_order(root)
