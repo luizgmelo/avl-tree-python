@@ -1,11 +1,11 @@
+class Node:
+    def __init__(self, key, left = None, right = None):
+        self.key = key
+        self.left = left
+        self.right = right
+        self.height = 1
+
 class AVL:
-    class Node:
-        def __init__(self, key, left = None, right = None):
-            self.key = key
-            self.left = left
-            self.right = right
-            self.height = 1
-        
     def right_rotate(self, z):
         y = z.left
         t3 = y.right
@@ -32,7 +32,7 @@ class AVL:
         
     def insert(self, root, key):
         if root is None:
-            return self.Node(key)
+            return Node(key)
 
         if key < root.key:
             root.left = self.insert(root.left, key)
